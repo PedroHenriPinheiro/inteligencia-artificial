@@ -4,7 +4,8 @@ import sys
 
 from domain.model import RushHourBoard
 from infra.board_loader import BoardFormatError, avisos, load_board
-from service.heuristic import CascadeHeuristic
+from service.bfs_solver import BFSSolver
+from service.heuristic import HEURISTICAS, CascadeHeuristic
 from service.solver import AStarSolver
 from presentation.view import TerminalCLI
 
@@ -48,11 +49,17 @@ def generate_random_board(grid_size=12, num_vehicles=10):
 
 
 def parse_args():
-    p = argparse.ArgumentParser(description="Resolvedor de Rush Hour NxN com A*.")
+    p = argparse.ArgumentParser(description="Resolvedor de Rush Hour NxN (BFS e A*).")
     p.add_argument("instancia", nargs="?",
                    help="arquivo .txt da instância (sem ele, gera um tabuleiro aleatório)")
+    p.add_argument("--algoritmo", choices=["astar", "bfs"], default="astar")
+    p.add_argument("--heuristica", choices=sorted(HEURISTICAS), default="cascata",
+                   help="heurística do A* (ignorada na BFS)")
+    p.add_argument("--passos", action="store_true",
+                   help="desenha o tabuleiro depois de cada ação da solução")
     p.add_argument("--tamanho", type=int, default=12, help="tamanho do tabuleiro aleatório")
     p.add_argument("--veiculos", type=int, default=15, help="veículos do tabuleiro aleatório")
+    p.add_argument("--seed", type=int, default=None, help="seed do tabuleiro aleatório")
     return p.parse_args()
 
 
@@ -71,20 +78,26 @@ if __name__ == "__main__":
         for aviso in avisos(board, initial_state):
             print(f"⚠️  AVISO: {aviso}")
     else:
+        if args.seed is not None:
+            random.seed(args.seed)
         print(f"Gerando tabuleiro aleatório {args.tamanho}x{args.tamanho} "
               f"com {args.veiculos} veículos...")
         board, initial_state = generate_random_board(args.tamanho, args.veiculos)
 
     # 2. Inicializa os Services
-    heuristic_service = CascadeHeuristic(board)
-    solver_service = AStarSolver(board, heuristic_service)
+    if args.algoritmo == "bfs":
+        solver_service = BFSSolver(board)
+    else:
+        solver_service = AStarSolver(board, HEURISTICAS[args.heuristica](board))
 
     # 3. Interage com a View
     TerminalCLI.print_board(board, initial_state)
     print(f"Posições Iniciais (Dicionário): {initial_state}\n")
-    print("Iniciando busca A* (Pode levar tempo em deadlocks complexos)...")
+    print(f"Iniciando busca {solver_service.name}...")
 
     # 4. Executa Lógica e Exibe Resultados
-    path, cost = solver_service.solve(initial_state)
-    TerminalCLI.print_results(cost, path)
-    TerminalCLI.print_diagnostic(board, initial_state, heuristic_service)
+    result = solver_service.solve(initial_state)
+    TerminalCLI.print_result(result)
+    if args.passos:
+        TerminalCLI.print_solution_steps(board, result)
+    TerminalCLI.print_diagnostic(board, initial_state, CascadeHeuristic(board))

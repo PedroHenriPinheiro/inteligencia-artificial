@@ -58,14 +58,32 @@ class TerminalCLI:
         print("="*50 + "\n")
 
     @staticmethod
-    def print_results(cost, path):
-        if cost != -1:
-            print(f"\n✅ RESULTADO: Busca finalizada com SUCESSO! Custo mínimo de ações: {cost}")
-            print("-" * 50)
+    def print_result(result):
+        """Mostra o resultado de qualquer busca (SearchResult)."""
+        nome = result.algorithm + (f" ({result.heuristic})" if result.heuristic else "")
+        print("\n" + "-" * 50)
+        if result.found:
+            print(f"✅ {nome}: solução encontrada. Custo (nº de ações): {result.cost}")
+        else:
+            print(f"❌ {nome}: nenhuma solução encontrada.")
+        print(f"   Gerados: {result.generated} | Expandidos: {result.expanded} | "
+              f"Reexpandidos: {result.reexpanded}")
+        print(f"   Fronteira máxima: {result.max_frontier} | Tempo: {result.time_ms:.1f} ms")
+        print("-" * 50)
+        if result.found:
             print("TRACE DA SOLUÇÃO (Passo a Passo):")
-            for i, step in enumerate(path, 1):
+            for i, step in enumerate(result.path, 1):
                 print(f"Passo {i}: {step}")
             print("-" * 50)
-        else:
-            print("\n❌ RESULTADO: Nenhuma solução encontrada. (Deadlock matemático no tabuleiro)")
-            print("-" * 50)
+
+    @staticmethod
+    def print_solution_steps(board: RushHourBoard, result):
+        """Desenha o tabuleiro depois de cada ação da solução."""
+        if not result.found:
+            return
+        for i, (acao, estado) in enumerate(zip(result.path, result.states[1:]), 1):
+            print(f"\nPasso {i}: {acao}")
+            if estado:
+                print(TerminalCLI.render_board(board, estado))
+            else:
+                print("(X saiu do tabuleiro)")
