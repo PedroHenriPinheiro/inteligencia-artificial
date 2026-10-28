@@ -37,9 +37,9 @@ Cada decisão registra: o que a IA sugeriu, a nossa interpretação, a decisão 
 - Quem digitar `AA` sem espaço cria **um** veículo chamado "AA" de 1 célula, em vez de duas células de "A". O loader rejeita com "veículo 'AA' ocupa só 1 célula", mas a mensagem não diz que faltou um espaço.
 - Arquivos com ids longos ficam desalinhados se não forem salvos com `save_board`.
 
-**Nossa interpretação:** [PREENCHER]
-**Decisão:** [PREENCHER: aceitamos / rejeitamos / modificamos]
-**Por quê:** [PREENCHER]
+**Nossa interpretação:** (Enzo) a IA quer que o arquivo seja lido "por palavras" e não "por letras". Assim um carro pode se chamar "10", e o "·" copiado do PDF conta como casa vazia.
+**Decisão:** aceitamos.
+**Por quê:** o nosso gerador já cria carros "10" e "11" (foi o mesmo problema que vimos na tela no IH02). Sem isso não daria para salvar e reler esses tabuleiros nos experimentos. O risco de alguém digitar `AA` sem espaço fica como limitação conhecida, porque o loader rejeita esse caso, só que com uma mensagem pouco clara.
 
 ---
 
@@ -53,9 +53,9 @@ Cada decisão registra: o que a IA sugeriu, a nossa interpretação, a decisão 
 
 **Alternativa:** rejeitar no carregamento. É mais simples para quem usa a interface, mas mistura validação de formato com análise de solubilidade.
 
-**Nossa interpretação:** [PREENCHER]
-**Decisão:** [PREENCHER: aceitamos / rejeitamos / modificamos]
-**Por quê:** [PREENCHER]
+**Nossa interpretação:** (João) o leitor de arquivo só confere se o tabuleiro respeita as regras; descobrir se tem solução é papel da busca. O aviso é só uma ajuda para o caso mais óbvio. *(⚠️ confirmar com João)*
+**Decisão:** aceitamos.
+**Por quê:** instâncias sem solução são úteis nos experimentos, para medir quanto a BFS gasta até provar que não há saída. E rejeitar só o caso óbvio daria a falsa impressão de que toda instância carregada tem solução. *(⚠️ confirmar com João)*
 
 ---
 
@@ -67,4 +67,4 @@ Hipóteses de correção mínima (as casas envolvidas estão vazias no original)
 - 'b' em (10,5), (11,5), (12,5): vertical de tamanho 3, mudando só a última casa uma coluna para a direita;
 - 'd' em (11,3), (12,3): vertical de tamanho 2.
 
-**Decisão da equipe:** [PREENCHER: perguntar ao professor / adotar as hipóteses acima / outra]
+**Decisão da equipe:** perguntar ao professor (Enzo leva a pergunta). Até a resposta, a transcrição fiel fica em `invalidas/` e nenhum resultado oficial usa uma versão corrigida por nós. Se não houver resposta a tempo, usamos a correção mínima acima e deixamos isso explícito no relatório.
