@@ -1,11 +1,16 @@
+import argparse
 import random
+import sys
+
 from domain.model import RushHourBoard
+from infra.board_loader import BoardFormatError, avisos, load_board
 from service.heuristic import CascadeHeuristic
 from service.solver import AStarSolver
 from presentation.view import TerminalCLI
 
+
 def generate_random_board(grid_size=12, num_vehicles=10):
-    board = RushHourBoard(grid_size=grid_size)
+    board = RushHourBoard(grid_size=grid_size, exit_col=grid_size - 1)
     initial_state = {}
     occupied = set()
 
@@ -41,14 +46,34 @@ def generate_random_board(grid_size=12, num_vehicles=10):
 
     return board, initial_state
 
+
+def parse_args():
+    p = argparse.ArgumentParser(description="Resolvedor de Rush Hour NxN com A*.")
+    p.add_argument("instancia", nargs="?",
+                   help="arquivo .txt da instância (sem ele, gera um tabuleiro aleatório)")
+    p.add_argument("--tamanho", type=int, default=12, help="tamanho do tabuleiro aleatório")
+    p.add_argument("--veiculos", type=int, default=15, help="veículos do tabuleiro aleatório")
+    return p.parse_args()
+
+
 if __name__ == "__main__":
-    TAMANHO_TABULEIRO = 12
-    QUANTIDADE_VEICULOS = 15
+    args = parse_args()
 
-    print(f"Gerando tabuleiro aleatório {TAMANHO_TABULEIRO}x{TAMANHO_TABULEIRO} com {QUANTIDADE_VEICULOS} veículos...")
-
-    # 1. Inicializa o Model
-    board, initial_state = generate_random_board(TAMANHO_TABULEIRO, QUANTIDADE_VEICULOS)
+    # 1. Inicializa o Model (arquivo ou aleatório)
+    if args.instancia:
+        try:
+            board, initial_state = load_board(args.instancia)
+        except (BoardFormatError, OSError) as erro:
+            print(erro, file=sys.stderr)
+            sys.exit(2)
+        print(f"Instância carregada: {args.instancia} ({board.grid_size}x{board.grid_size}, "
+              f"{len(initial_state)} veículos)")
+        for aviso in avisos(board, initial_state):
+            print(f"⚠️  AVISO: {aviso}")
+    else:
+        print(f"Gerando tabuleiro aleatório {args.tamanho}x{args.tamanho} "
+              f"com {args.veiculos} veículos...")
+        board, initial_state = generate_random_board(args.tamanho, args.veiculos)
 
     # 2. Inicializa os Services
     heuristic_service = CascadeHeuristic(board)

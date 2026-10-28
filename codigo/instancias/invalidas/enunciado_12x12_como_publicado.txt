@@ -1,0 +1,15 @@
+# Tabuleiro do enunciado (Trabalho Prático de IA, seção 2), transcrito como publicado.
+# Números de linha/coluna e a seta "-> SAÍDA" foram removidos.
+# INVÁLIDO: 'b' ocupa (10,5), (11,5) e (12,4) e 'd' ocupa uma célula só.
+A A · B · C C · D · · ·
+· E E B · · F · D G G ·
+H H · B I I F · D · J ·
+K · L L · · F M M · J ·
+K · · N N · · · O O J ·
+K · X X · P · Q · R · ·
+· S S · · P · Q · R · ·
+T · U U · P · Q · R V V
+T · · W W · Y Y · · · Z
+T a a · b · · c c · · Z
+· · d · b e e · f f · Z
+g g · b · h h · · · · ·

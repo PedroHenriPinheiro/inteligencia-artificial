@@ -1,0 +1,8 @@
+# Contraexemplo da heurística em cascata original (h = infinito, h* = 12).
+# Ver 04-heuristicas/H3-revisao.md e 07-interacoes-humano-ia/IH02.md.
+.  1  1  .  .  .
+.  2  7  .  .  8
+.  2  7  X  X  8
+4  4  4  11 11 8
+0  5  5  5  3  3
+0  9  9  6  6  6
