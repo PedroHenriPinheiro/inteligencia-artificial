@@ -1,4 +1,4 @@
-# Revisão da Heurística 3 (Cascata): ciclos, admissibilidade e consistência
+# Revisão da Heurística 3 (Cascata)- (Enzo Carvalho + Claude): ciclos, admissibilidade e consistência
 
 Análise feita a partir do contraexemplo encontrado pela equipe (6x6, h = ∞, h* = 12)
 e do verificador `codigo/testes/verificar_admissibilidade.py`.
