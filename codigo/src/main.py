@@ -5,7 +5,7 @@ import sys
 from domain.model import RushHourBoard
 from infra.board_loader import BoardFormatError, avisos, load_board
 from service.bfs_solver import BFSSolver
-from service.heuristic import HEURISTICAS, CascadeHeuristic
+from service.heuristics import HEURISTICAS, CascadeHeuristic
 from service.solver import AStarSolver
 from presentation.view import TerminalCLI
 
@@ -53,7 +53,7 @@ def parse_args():
     p.add_argument("instancia", nargs="?",
                    help="arquivo .txt da instância (sem ele, gera um tabuleiro aleatório)")
     p.add_argument("--algoritmo", choices=["astar", "bfs"], default="astar")
-    p.add_argument("--heuristica", choices=sorted(HEURISTICAS), default="cascata",
+    p.add_argument("--heuristica", choices=list(HEURISTICAS), default="hfinal",
                    help="heurística do A* (ignorada na BFS)")
     p.add_argument("--passos", action="store_true",
                    help="desenha o tabuleiro depois de cada ação da solução")

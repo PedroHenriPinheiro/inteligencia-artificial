@@ -29,10 +29,23 @@ class RushHourBoard:
         return occupied
 
     def get_successors(self, state):
+        """Lista (novo_estado, custo, descrição) de todas as ações legais.
+
+        Os veículos são percorridos na ordem de `self.vehicles` (ordem em que
+        foram adicionados, ou seja, a ordem de leitura do arquivo), e NÃO na
+        ordem de `state.items()`. O estado vem de um frozenset, e a ordem de
+        iteração de um frozenset depende do hash das strings, que o Python
+        sorteia a cada execução (PYTHONHASHSEED). Com a ordem de state.items(),
+        a ordem dos sucessores, e por isso os desempates da BFS e do A*,
+        mudavam entre execuções.
+        """
         successors = []
         occupied = self.get_occupied_cells(state)
 
-        for v_id, var_coord in state.items():
+        for v_id in self.vehicles:
+            if v_id not in state:
+                continue  # X depois de sair do tabuleiro
+            var_coord = state[v_id]
             v = self.vehicles[v_id]
             eixo_nome = "coluna" if v.orientation == 'H' else "linha"
 
