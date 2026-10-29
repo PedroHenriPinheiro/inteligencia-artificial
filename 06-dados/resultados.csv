@@ -1,0 +1,17 @@
+
+Teste 6x6 (Corredor Livre),A*,H1 (Distância Espacial),1,6,1,0.0000
+Teste 6x6 (Corredor Livre),A*,H3 (Bloqueios),1,6,1,0.0000
+Teste 6x6 (Corredor Livre),A*,H1 (Distância Espacial),1,6,1,0.0000
+Teste 6x6 (Corredor Livre),A*,H3 (Bloqueios),1,6,1,0.0000
+Teste 6x6 (Corredor Livre),A*,H1 (Distância Espacial),3,96,12,0.0003
+Teste 6x6 (Corredor Livre),A*,H3 (Bloqueios),3,117,15,0.0003
+Teste 8x8 (Deslocamento Real),A*,A* s/ Gargalo 1 (Míope),3,96,12,0.0003
+Teste 8x8 (Deslocamento Real),A*,H3 (c/ Deslocamento Real),3,117,15,0.0003
+Teste 6x6 (Corredor Livre),A*,H1 (Distância Espacial),2,77,5,0.0003
+Teste 6x6 (Corredor Livre),A*,H3 (Bloqueios),2,77,5,0.0001
+Teste 10x10 (Limites Absolutos),A*,H2 (Sem limites rígidos),2,77,5,0.0003
+Teste 10x10 (Limites Absolutos),A*,H3 (Com Limites Absolutos),2,77,5,0.0001
+Teste 6x6 (Corredor Livre),A*,H1 (Distância Espacial),4,774,50,0.0021
+Teste 6x6 (Corredor Livre),A*,H3 (Bloqueios),3,690,46,0.0016
+Teste 8x8 (Dupla Contagem),A*,H05 (+1 por V1 preso),4,774,50,0.0021
+Teste 8x8 (Dupla Contagem),A*,H3.1 (Apenas IDs únicos),3,690,46,0.0016
